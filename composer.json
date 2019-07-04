@@ -1,0 +1,40 @@
+{
+    "name": "illuminatech/url-trailing-slash",
+    "description": "Allows enforcing URL routes with or without trailing slash",
+    "keywords": ["laravel", "url", "route", "routing", "trailing", "slash"],
+    "license": "BSD-3-Clause",
+    "support": {
+        "issues": "https://github.com/illuminatech/url-trailing-slash/issues",
+        "wiki": "https://github.com/illuminatech/url-trailing-slash/wiki",
+        "source": "https://github.com/illuminatech/url-trailing-slash"
+    },
+    "authors": [
+        {
+            "name": "Paul Klimov",
+            "email": "klimov.paul@gmail.com"
+        }
+    ],
+    "require": {
+        "illuminate/routing": "^5.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Illuminatech\\UrlTrailingSlash\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Illuminatech\\UrlTrailingSlash\\Test\\": "tests"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        },
+        "laravel": {
+            "providers": [
+                "Illuminatech\\UrlTrailingSlash\\RoutingServiceProvider"
+            ]
+        }
+    }
+}
