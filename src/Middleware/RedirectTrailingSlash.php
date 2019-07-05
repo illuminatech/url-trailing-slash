@@ -55,12 +55,17 @@ class RedirectTrailingSlash
             return $next($request);
         }
 
-        if (Str::endsWith($request->getPathInfo(), '/')) {
+        $pathInfo = $request->getPathInfo();
+
+        if ($pathInfo === '/') {
+            // there is no way to determine whether path info empty or equals to single slash from PHP side:
+            // `$_SERVER['REQUEST_URI']` equals to '/' in both cases
+            return $next($request);
+        }
+
+        if (Str::endsWith($pathInfo, '/')) {
             if (! $currentRoute->hasTrailingSlash) {
-                $url = $request->getSchemeAndHttpHost().rtrim($request->getPathInfo(), '/');
-                if (($queryString = $request->getQueryString()) !== null) {
-                    $url .= '?'.$queryString;
-                }
+                $url = $this->createRedirectUrl($request, rtrim($pathInfo, '/'));
 
                 return $this->redirect($url);
             }
@@ -68,15 +73,35 @@ class RedirectTrailingSlash
         }
 
         if ($currentRoute->hasTrailingSlash) {
-            $url = $request->getSchemeAndHttpHost().$request->getPathInfo().'/';
-            if (($queryString = $request->getQueryString()) !== null) {
-                $url .= '?'.$queryString;
-            }
+            $url = $this->createRedirectUrl($request, $pathInfo.'/');
 
             return $this->redirect($url);
         }
 
         return $next($request);
+    }
+
+    /**
+     * Creates URL for redirection from given request replacing its path with new value.
+     *
+     * @param  \Illuminate\Http\Request  $request HTTP request.
+     * @param  string  $newPath new request path.
+     * @return string generated URL.
+     */
+    protected function createRedirectUrl($request, $newPath): string
+    {
+        $url = $request->getSchemeAndHttpHost();
+        if (($baseUrl = $request->getBaseUrl()) !== null) {
+            $url .= $baseUrl;
+        }
+
+        $url .= $newPath;
+
+        if (($queryString = $request->getQueryString()) !== null) {
+            $url .= '?'.$queryString;
+        }
+
+        return $url;
     }
 
     /**

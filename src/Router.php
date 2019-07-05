@@ -27,7 +27,7 @@ class Router extends BaseRouter
     {
         $result = parent::prefix($uri);
 
-        if ($result !== '/' && Str::endsWith($uri, '/')) {
+        if (Str::endsWith($uri, '/')) {
             return $result.'/';
         }
 

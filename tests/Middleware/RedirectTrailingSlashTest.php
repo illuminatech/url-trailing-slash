@@ -73,34 +73,106 @@ class RedirectTrailingSlashTest extends TestCase
         });
     }
 
-    public function testRedirect()
+    /**
+     * Data provider for {@see testRedirect()}
+     *
+     * @return array test data.
+     */
+    public function dataProviderRedirect(): array
     {
-        /* @var $response RedirectResponse */
+        return [
+            [
+                'foo/bar/',
+                'http://example.com/foo/bar',
+                'http://example.com/foo/bar/'
+            ],
+            [
+                'foo/bar',
+                'http://example.com/foo/bar/',
+                'http://example.com/foo/bar',
+            ],
+            [
+                'foo/bar/',
+                'http://example.com/foo/bar?name=value',
+                'http://example.com/foo/bar/?name=value',
+            ],
+            [
+                'foo/bar',
+                'http://example.com/foo/bar/?name=value',
+                'http://example.com/foo/bar?name=value',
+            ],
+        ];
+    }
 
+    /**
+     * @dataProvider dataProviderRedirect
+     *
+     * @param  string  $routeUri
+     * @param  string  $requestUri
+     * @param  string  $redirectUri
+     */
+    public function testRedirect(string $routeUri, string $requestUri, string $redirectUri)
+    {
         $middleware = new RedirectTrailingSlash($this->createContainer());
 
-        $request = $this->createRequest($this->createRoute('foo/bar/'), 'http://example.com/foo/bar');
+        $request = $this->createRequest($this->createRoute($routeUri), $requestUri);
+
+        /* @var $response RedirectResponse */
+        $response = $middleware->handle($request, $this->createDummyRequestHandler());
+
+        $this->assertTrue($response instanceof RedirectResponse);
+        $this->assertSame($redirectUri, $response->headers->get('Location'));
+    }
+
+    /**
+     * Data provider for {@see testNoRedirect()}
+     *
+     * @return array test data.
+     */
+    public function dataProviderNoRedirect(): array
+    {
+        return [
+            [
+                'foo/bar/',
+                'http://example.com/foo/bar/',
+            ],
+            [
+                'foo/bar',
+                'http://example.com/foo/bar',
+            ],
+            [
+                'foo/bar/',
+                'http://example.com/foo/bar/?name=value',
+            ],
+            [
+                'foo/bar',
+                'http://example.com/foo/bar?name=value',
+            ],
+            [
+                '/',
+                'http://example.com/',
+            ],
+            [
+                '',
+                'http://example.com',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderNoRedirect
+     *
+     * @param  string  $routeUri
+     * @param  string  $requestUri
+     */
+    public function testNoRedirect(string $routeUri, string $requestUri)
+    {
+        $middleware = new RedirectTrailingSlash($this->createContainer());
+
+        $request = $this->createRequest($this->createRoute($routeUri), $requestUri);
 
         $response = $middleware->handle($request, $this->createDummyRequestHandler());
-        $this->assertTrue($response instanceof RedirectResponse);
-        $this->assertSame('http://example.com/foo/bar/', $response->headers->get('Location'));
 
-        $request = $this->createRequest($this->createRoute('foo/bar'), 'http://example.com/foo/bar/');
-
-        $response = $middleware->handle($request, $this->createDummyRequestHandler());
-        $this->assertTrue($response instanceof RedirectResponse);
-        $this->assertSame('http://example.com/foo/bar', $response->headers->get('Location'));
-
-        $request = $this->createRequest($this->createRoute('foo/bar/'), 'http://example.com/foo/bar?name=value');
-
-        $response = $middleware->handle($request, $this->createDummyRequestHandler());
-        $this->assertTrue($response instanceof RedirectResponse);
-        $this->assertSame('http://example.com/foo/bar/?name=value', $response->headers->get('Location'));
-
-        $request = $this->createRequest($this->createRoute('foo/bar'), 'http://example.com/foo/bar/?name=value');
-
-        $response = $middleware->handle($request, $this->createDummyRequestHandler());
-        $this->assertTrue($response instanceof RedirectResponse);
-        $this->assertSame('http://example.com/foo/bar?name=value', $response->headers->get('Location'));
+        $this->assertSame($request, $response);
     }
 }

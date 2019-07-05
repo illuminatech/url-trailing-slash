@@ -48,6 +48,24 @@ class RouterTest extends TestCase
 
         $this->assertTrue($route instanceof Route);
         $this->assertFalse($route->hasTrailingSlash);
+
+        $router->get('/', function () {
+            return 'home with trailing slash';
+        });
+
+        $route = $router->getRoutes()->getRoutes()[2];
+
+        $this->assertTrue($route instanceof Route);
+        $this->assertTrue($route->hasTrailingSlash);
+
+        $router->get('', function () {
+            return 'home without trailing slash';
+        });
+
+        $route = $router->getRoutes()->getRoutes()[3];
+
+        $this->assertTrue($route instanceof Route);
+        $this->assertFalse($route->hasTrailingSlash);
     }
 
     public function testMatch()

@@ -47,10 +47,8 @@ class Route extends BaseRoute
      */
     public function __construct($methods, $uri, $action)
     {
-        if ($uri !== '/') {
-            $this->hasTrailingSlash = Str::endsWith($uri, '/');
-            $uri = trim($uri, '/');
-        }
+        $this->hasTrailingSlash = Str::endsWith($uri, '/');
+        $uri = trim($uri, '/');
 
         parent::__construct($methods, $uri, $action);
     }
