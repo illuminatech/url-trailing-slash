@@ -124,7 +124,7 @@ echo route('items.show', [1]); // outputs: 'http://example.com/items/1'
 > Tip: the best SEO practice is having trailing slash at the URLs, which have nested pages, e.g. "defines a folder" and
   have no trailing slashes at the URLs without nested pages, e.g. "pathname of the file".
 
-In case you have setup `\Illuminatech\UrlTrailingSlash\RoutingServiceProvider` middleware, application will automatically
+In case you have setup `\Illuminatech\UrlTrailingSlash\Middleware\RedirectTrailingSlash` middleware, application will automatically
 redirect request with incorrect URL according to the routes definition. For the example above: request of 'http://example.com/items'
 causes redirect to 'http://example.com/items/' while request to 'http://example.com/items/1/' causes redirect to 'http://example.com/items/1'.
 
@@ -132,3 +132,13 @@ causes redirect to 'http://example.com/items/' while request to 'http://example.
 or absence in **each** route you define. While normally Laravel strips any trailing slashes from route URI automatically,
 this extension gives them meaning. You should carefully examine your routes definitions, ensuring you do not set trailing
 slash for the wrong ones.
+
+
+## Slash in Root URL <span id="slash-in-root-url"></span>
+
+Unfortunally this extension is unable to handle trailing slashes for the project root URL, e.g. for a 'home' page.
+In other words `\Illuminatech\UrlTrailingSlash\Middleware\RedirectTrailingSlash` middleware is unable to distinguish URL
+like 'http://examle.com' from 'http://examle.com/'. This restriction caused by PHP itself, as `$_SERVER['REQUEST_URI']`
+value equals to '/' in both cases.
+
+You'll have to deal with trailing slash for root URL separately at the server settings level.
