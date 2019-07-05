@@ -9,24 +9,45 @@ namespace Illuminatech\UrlTrailingSlash;
 
 use Illuminate\Container\Container;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Contracts\Support\DeferrableProvider;
 
 /**
  * RoutingServiceProvider overrides DI container bindings for the routing components with the ones supporting trailing slashes.
+ *
+ * This service provider should be registered within the application before kernel instantiation, .e.g. at the application
+ * bootstrap stage. This can be done in 'bootstrap/app.php' file of regular Laravel application. For example:
+ *
+ * ```php
+ * <?php
+ *
+ * $app = new Illuminate\Foundation\Application(
+ *     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
+ * );
+ *
+ * $app->singleton(
+ *     Illuminate\Contracts\Http\Kernel::class,
+ *     App\Http\Kernel::class
+ * );
+ * // ...
+ *
+ * $app->register(new Illuminatech\UrlTrailingSlash\RoutingServiceProvider($app));
+ *
+ * return $app;
+ * ```
+ *
+ * Registering this provided in normal way will have no effect since it alters the router, which is bound to the HTTP kernel
+ * instance at constructor level.
  *
  * @see \Illuminate\Routing\RoutingServiceProvider
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.0
  */
-class RoutingServiceProvider extends ServiceProvider implements DeferrableProvider
+class RoutingServiceProvider extends ServiceProvider
 {
     /**
-     * Bootstrap any application services.
-     *
-     * @return void
+     * {@inheritdoc}
      */
-    public function boot(): void
+    public function register(): void
     {
         $this->app->singleton('router', function (Container $app) {
             return new Router($app->make('events'), $app);
@@ -41,16 +62,5 @@ class RoutingServiceProvider extends ServiceProvider implements DeferrableProvid
 
             return $newUrlGenerator;
         });
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function provides(): array
-    {
-        return [
-            'router',
-            'url',
-        ];
     }
 }
