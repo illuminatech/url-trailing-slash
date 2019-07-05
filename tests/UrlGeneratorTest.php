@@ -3,8 +3,8 @@
 namespace Illuminatech\UrlTrailingSlash\Test;
 
 use Illuminate\Http\Request;
-use Illuminate\Routing\Route;
 use Illuminate\Routing\RouteCollection;
+use Illuminatech\UrlTrailingSlash\Route;
 use Illuminatech\UrlTrailingSlash\UrlGenerator;
 
 class UrlGeneratorTest extends TestCase
@@ -33,11 +33,17 @@ class UrlGeneratorTest extends TestCase
         $routes->add(new Route(['GET'], 'foo/bar/', ['as' => 'plain.with.slash']));
         $routes->add(new Route(['GET'], 'foo/bar/{baz}/breeze/{boom}', ['as' => 'param.no.slash']));
         $routes->add(new Route(['GET'], 'foo/bar/{baz}/breeze/{boom}/', ['as' => 'param.with.slash']));
+        $routes->add(new Route(['GET'], 'foo/bar/{option?}', ['as' => 'optional.param.no.slash']));
+        $routes->add(new Route(['GET'], 'foo/bar/{option?}/', ['as' => 'optional.param.with.slash']));
 
         $this->assertEquals('/', $urlGenerator->route('home', [], false));
         $this->assertEquals('/foo/bar', $urlGenerator->route('plain.no.slash', [], false));
         $this->assertEquals('/foo/bar/', $urlGenerator->route('plain.with.slash', [], false));
         $this->assertEquals('/foo/bar/one/breeze/two?extra=three', $urlGenerator->route('param.no.slash', ['one', 'two', 'extra' => 'three'], false));
         $this->assertEquals('/foo/bar/one/breeze/two/?extra=three', $urlGenerator->route('param.with.slash', ['one', 'two', 'extra' => 'three'], false));
+        $this->assertEquals('/foo/bar', $urlGenerator->route('optional.param.no.slash', [], false));
+        $this->assertEquals('/foo/bar/one', $urlGenerator->route('optional.param.no.slash', ['one'], false));
+        $this->assertEquals('/foo/bar/', $urlGenerator->route('optional.param.with.slash', [], false));
+        $this->assertEquals('/foo/bar/one/', $urlGenerator->route('optional.param.with.slash', ['one'], false));
     }
 }

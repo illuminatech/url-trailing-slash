@@ -17,6 +17,9 @@
     "require": {
         "illuminate/routing": "^5.8"
     },
+    "require-dev": {
+        "illuminate/events": "^5.8"
+    },
     "autoload": {
         "psr-4": {
             "Illuminatech\\UrlTrailingSlash\\": "src"

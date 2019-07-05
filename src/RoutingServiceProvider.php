@@ -12,9 +12,9 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Contracts\Support\DeferrableProvider;
 
 /**
- * RoutingServiceProvider
+ * RoutingServiceProvider overrides DI container bindings for the routing components with the ones supporting trailing slashes.
  *
- * @see \Illuminate\Routing\RoutingServiceProvider::registerUrlGenerator()
+ * @see \Illuminate\Routing\RoutingServiceProvider
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.0

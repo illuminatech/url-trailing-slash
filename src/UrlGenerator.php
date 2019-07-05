@@ -11,7 +11,9 @@ use Illuminate\Support\Str;
 use Illuminate\Routing\UrlGenerator as BaseUrlGenerator;
 
 /**
- * UrlGenerator
+ * UrlGenerator is an enhanced version of {@see \Illuminate\Routing\UrlGenerator} supporting URL with trailing slash generation.
+ *
+ * @see \Illuminatech\UrlTrailingSlash\Route
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.0
@@ -33,7 +35,7 @@ class UrlGenerator extends BaseUrlGenerator
             return $url;
         }
 
-        if (Str::endsWith($route->uri, '/')) {
+        if ($route instanceof Route && $route->hasTrailingSlash) {
             return $url.'/';
         }
 
@@ -45,6 +47,10 @@ class UrlGenerator extends BaseUrlGenerator
      */
     public function to($path, $extra = [], $secure = null)
     {
+        if ($this->isValidUrl($path)) {
+            return $path;
+        }
+
         $url = parent::to($path, $extra, $secure);
 
         if (Str::endsWith($path, '/')) {

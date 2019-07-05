@@ -39,3 +39,21 @@ Usage
 -----
 
 This extension allows enforcing URL routes with or without trailing slash.
+
+In case URI for particular route is specified with the trailing slash - it will be enforced for this route and request
+without slash in the URL end will cause 301 redirection.
+In case URI for particular route is specified without the trailing slash - its absence will be enforced for this route
+and request containing slash in the URL end will cause 301 redirection.
+
+For example:
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Support\Facades\Route;
+
+Route::get('items/', ItemController::class.'@index')->name('items.index'); // enforce trailing slash
+Route::get('items/{item}', ItemController::class.'@show')->name('items.show'); // enforce no trailing slash
+```
