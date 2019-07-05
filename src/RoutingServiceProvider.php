@@ -13,7 +13,7 @@ use Illuminate\Support\ServiceProvider;
 /**
  * RoutingServiceProvider overrides DI container bindings for the routing components with the ones supporting trailing slashes.
  *
- * This service provider should be registered within the application before kernel instantiation, .e.g. at the application
+ * This service provider should be registered within the application before kernel instantiation, e.g. at the application
  * bootstrap stage. This can be done in 'bootstrap/app.php' file of regular Laravel application. For example:
  *
  * ```php
@@ -34,7 +34,7 @@ use Illuminate\Support\ServiceProvider;
  * return $app;
  * ```
  *
- * Registering this provided in normal way will have no effect since it alters the router, which is bound to the HTTP kernel
+ * Registering this provided in normal way will have no effect, since it alters the router, which is bound to the HTTP kernel
  * instance at constructor level.
  *
  * @see \Illuminate\Routing\RoutingServiceProvider
