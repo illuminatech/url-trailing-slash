@@ -56,8 +56,8 @@ $app->register(new Illuminatech\UrlTrailingSlash\RoutingServiceProvider($app)); 
 return $app;
 ```
 
-> Note: `\Illuminatech\UrlTrailingSlash\RoutingServiceProvider` can not be registered in normal way or be discovered by
-  Laravel, since it alters the router, which is bound to the HTTP kernel instance at constructor level.
+> Note: `\Illuminatech\UrlTrailingSlash\RoutingServiceProvider` can not be registered in normal way or be automatically
+  discovered by Laravel, since it alters the router, which is bound to the HTTP kernel instance at constructor level.
 
 In order to setup automatic redirection for the routes with trailing slash add `\Illuminatech\UrlTrailingSlash\Middleware\RedirectTrailingSlash`
 middleware to your HTTP kernel. For example:
@@ -99,7 +99,7 @@ This extension allows enforcing URL routes with or without trailing slash. You c
 should have a trailing slash or not, simply by addition or removal slash symbol ('/') in particular route definition.
 
 In case URI for particular route is specified with the trailing slash - it will be enforced for this route and request
-without slash in the URL end will cause 301 redirection.
+without slash in the URL ending will cause 301 redirection.
 In case URI for particular route is specified without the trailing slash - its absence will be enforced for this route
 and request containing slash in the URL end will cause 301 redirection.
 
@@ -121,12 +121,12 @@ echo route('items.index'); // outputs: 'http://example.com/items/'
 echo route('items.show', [1]); // outputs: 'http://example.com/items/1'
 ```
 
-> Tip: the best SEO practice is having trailing slash at the URLs, which have nested pages, e.g. "defines a folder" and
+> Tip: the best SEO practice is having trailing slash at the URLs, which have nested pages, e.g. "defines a folder", and
   have no trailing slashes at the URLs without nested pages, e.g. "pathname of the file".
 
 In case you have setup `\Illuminatech\UrlTrailingSlash\Middleware\RedirectTrailingSlash` middleware, application will automatically
-redirect request with incorrect URL according to the routes definition. For the example above: request of 'http://example.com/items'
-causes redirect to 'http://example.com/items/' while request to 'http://example.com/items/1/' causes redirect to 'http://example.com/items/1'.
+redirect request with incorrect URL according to the routes definition. For the example above: request of `http://example.com/items`
+causes redirect to `http://example.com/items/` while request to `http://example.com/items/1/` causes redirect to `http://example.com/items/1`.
 
 **Heads up!** Remember, that with this extension installed, you are controlling requirements of URL trailing slashes presence
 or absence in **each** route you define. While normally Laravel strips any trailing slashes from route URI automatically,
@@ -138,7 +138,7 @@ slash for the wrong ones.
 
 Unfortunally this extension is unable to handle trailing slashes for the project root URL, e.g. for a 'home' page.
 In other words `\Illuminatech\UrlTrailingSlash\Middleware\RedirectTrailingSlash` middleware is unable to distinguish URL
-like 'http://examle.com' from 'http://examle.com/'. This restriction caused by PHP itself, as `$_SERVER['REQUEST_URI']`
+like `http://examle.com` from `http://examle.com/`. This restriction caused by PHP itself, as `$_SERVER['REQUEST_URI']`
 value equals to '/' in both cases.
 
 You'll have to deal with trailing slash for root URL separately at the server settings level.

@@ -15,6 +15,28 @@ use Illuminate\Contracts\Container\Container;
 /**
  * RedirectTrailingSlash is a middleware, which performs redirection in case URI trailing slash does not match the route.
  *
+ * This middleware should be assigned to the route group, which should maintain SEO, for example:
+ *
+ * ```php
+ * namespace App\Http;
+ *
+ * use Illuminate\Foundation\Http\Kernel as HttpKernel;
+ *
+ * class Kernel extends HttpKernel
+ * {
+ *     protected $middlewareGroups = [
+ *         'web' => [
+ *             \Illuminatech\UrlTrailingSlash\Middleware\RedirectTrailingSlash::class,
+ *             // ...
+ *         ],
+ *         // ...
+ *     ];
+ *     // ...
+ * }
+ * ```
+ *
+ * > Tip: there is no point to assign this middleware to the routes, which are not indexed by search engines, like API.
+ *
  * @see \Illuminatech\UrlTrailingSlash\Route
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
