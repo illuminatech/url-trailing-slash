@@ -185,30 +185,20 @@ trait CreatesApplication
 
 However this in not enough to make tests running correctly as Laravel automatically strips trailing slashes from requests
 URL before staring test HTTP request. Thus you will need to override `\Illuminate\Foundation\Testing\Concerns\MakesHttpRequests::prepareUrlForRequest()`
-in the way it respects trailing slashes. For example:
+in the way it respects trailing slashes. This can be achieved using `Illuminatech\UrlTrailingSlash\Testing\AllowsUrlTrailingSlash`.
+For example:
 
 ```php
 <?php
 
-use Illuminate\Support\Str;
+namespace Tests;
+
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminatech\UrlTrailingSlash\Testing\AllowsUrlTrailingSlash;
 
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function prepareUrlForRequest($uri)
-    {
-        $result = parent::prepareUrlForRequest($uri);
-
-        if (Str::endsWith($uri, '/')) {
-            $result .= '/';
-        }
-
-        return $result;
-    }
+    use AllowsUrlTrailingSlash;
 }
 ```
