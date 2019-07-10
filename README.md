@@ -91,6 +91,11 @@ class Kernel extends HttpKernel
 }
 ```
 
+**Heads up!** Make sure you do not have any trailing slash redirection mechanism at the server configuration level, which
+may conflict with `\Illuminatech\UrlTrailingSlash\Middleware\RedirectTrailingSlash`. Remember, that by default Laravel
+application is shipped with `.htaccess` file, which contains redirection rule enforcing trailing slash absence in project URLs.
+Make sure you adjust or disable it, otherwise your application may end in infinite redirection loop.
+
 
 Usage
 -----
@@ -142,3 +147,68 @@ like `http://examle.com` from `http://examle.com/`. This restriction caused by P
 value equals to '/' in both cases.
 
 You'll have to deal with trailing slash for root URL separately at the server settings level.
+
+
+## Trailing Slash in Unit Tests <span id="trailing-slash-in-unit-tests"></span>
+
+Since `Illuminatech\UrlTrailingSlash\RoutingServiceProvider` can not be registered as regular data provider, while writing
+unit and feature tests you will have to manually register it withing test application before test kernel instantiation.
+This can be done within `\Tests\CreatesApplication` trait:
+
+```php
+<?php
+
+namespace Tests;
+
+use Illuminate\Contracts\Console\Kernel;
+use Illuminatech\UrlTrailingSlash\RoutingServiceProvider;
+
+trait CreatesApplication
+{
+    /**
+     * Creates the application.
+     *
+     * @return \Illuminate\Foundation\Application
+     */
+    public function createApplication()
+    {
+        $app = require __DIR__.'/../bootstrap/app.php';
+
+        $app->register(new RoutingServiceProvider($app)); // register trailing slashes routing
+
+        $app->make(Kernel::class)->bootstrap();
+
+        return $app;
+    }
+}
+```
+
+However this in not enough to make tests running correctly as Laravel automatically strips trailing slashes from requests
+URL before staring test HTTP request. Thus you will need to override `\Illuminate\Foundation\Testing\Concerns\MakesHttpRequests::prepareUrlForRequest()`
+in the way it respects trailing slashes. For example:
+
+```php
+<?php
+
+use Illuminate\Support\Str;
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+
+abstract class TestCase extends BaseTestCase
+{
+    use CreatesApplication;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function prepareUrlForRequest($uri)
+    {
+        $result = parent::prepareUrlForRequest($uri);
+
+        if (Str::endsWith($uri, '/')) {
+            $result .= '/';
+        }
+
+        return $result;
+    }
+}
+```
