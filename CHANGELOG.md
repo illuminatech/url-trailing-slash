@@ -1,8 +1,8 @@
 Laravel URL Route Trailing Slash
 ================================
 
-1.0.1 Under Development
------------------------
+1.0.1, July 10, 2019
+--------------------
 
 - Enh: Added `AllowsUrlTrailingSlash` test case trait for the better unit and feature tests support (klimov-paul)
 
