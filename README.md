@@ -139,7 +139,7 @@ this extension gives them meaning. You should carefully examine your routes defi
 slash for the wrong ones.
 
 
-## Slash in Root URL <span id="slash-in-root-url"></span>
+### Slash in Root URL <span id="slash-in-root-url"></span>
 
 Unfortunally this extension is unable to handle trailing slashes for the project root URL, e.g. for a 'home' page.
 In other words `\Illuminatech\UrlTrailingSlash\Middleware\RedirectTrailingSlash` middleware is unable to distinguish URL
@@ -149,7 +149,57 @@ value equals to '/' in both cases.
 You'll have to deal with trailing slash for root URL separately at the server settings level.
 
 
-## Trailing Slash in Unit Tests <span id="trailing-slash-in-unit-tests"></span>
+### Resource Routes <span id="resource-routes"></span>
+
+You can define trailing slash presence for resource URLs using the same notation as for regular routes. In case resource
+name is specified with trailing slash all its URLs will have it. For example:
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Support\Facades\Route;
+
+Route::resource('items/', ItemController::class); // enforce trailing slash
+Route::resource('categories', CategoryController::class); // enforce no trailing slash
+
+// ...
+
+echo route('items.index'); // outputs: 'http://example.com/items/'
+echo route('items.show', [1]); // outputs: 'http://example.com/items/1/'
+
+echo route('categories.index'); // outputs: 'http://example.com/categories'
+echo route('categories.show', [1]); // outputs: 'http://example.com/categories/1'
+```
+
+You can control trailing slash presence per each resource route using options 'trailingSlashOnly' and 'trailingSlashExcept'.
+These options behave in similar to regular 'only' and 'except', specifying list of resource controller methods, which should
+or should not have a trailing slash in their URL. For example:
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Support\Facades\Route;
+
+Route::resource('items', ItemController::class, ['trailingSlashOnly' => 'index']); // trailing slash will be present only for 'index'
+Route::resource('categories', CategoryController::class, ['trailingSlashExcept' => 'show']); // trailing slash will be present for all but 'show'
+
+// ...
+
+echo route('items.index'); // outputs: 'http://example.com/items/'
+echo route('items.show', [1]); // outputs: 'http://example.com/items/1'
+
+echo route('categories.index'); // outputs: 'http://example.com/categories/'
+echo route('categories.show', [1]); // outputs: 'http://example.com/categories/1'
+```
+
+> Note: 'trailingSlashExcept' option takes precedence over 'trailingSlashOnly'.
+
+
+### Trailing Slash in Unit Tests <span id="trailing-slash-in-unit-tests"></span>
 
 Since `Illuminatech\UrlTrailingSlash\RoutingServiceProvider` can not be registered as regular data provider, while writing
 unit and feature tests you will have to manually register it withing test application before test kernel instantiation.
