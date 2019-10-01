@@ -9,6 +9,8 @@ namespace Illuminatech\UrlTrailingSlash;
 
 use Illuminate\Support\Str;
 use Illuminate\Routing\Router as BaseRouter;
+use Illuminate\Routing\PendingResourceRegistration;
+use Illuminate\Routing\ResourceRegistrar as BaseResourceRegistrar;
 
 /**
  * Router is an enhanced version of {@see \Illuminate\Routing\Router}, which allows routes with trailing slashes definition.
@@ -42,5 +44,32 @@ class Router extends BaseRouter
         return (new Route($methods, $uri, $action))
             ->setRouter($this)
             ->setContainer($this->container);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function resource($name, $controller, array $options = [])
+    {
+        if (Str::endsWith($name, '/')) {
+            $name = rtrim($name);
+            if (! isset($options['trailingSlashOnly'])) {
+                $options['trailingSlashOnly'] = ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'];
+            }
+        }
+
+        if (empty($options['trailingSlashOnly']) && empty($options['trailingSlashExcept'])) {
+            return parent::resource($name, $controller, $options);
+        }
+
+        if ($this->container && $this->container->bound(BaseResourceRegistrar::class)) {
+            $registrar = $this->container->make(BaseResourceRegistrar::class);
+        } else {
+            $registrar = new ResourceRegistrar($this);
+        }
+
+        return new PendingResourceRegistration(
+            $registrar, $name, $controller, $options
+        );
     }
 }

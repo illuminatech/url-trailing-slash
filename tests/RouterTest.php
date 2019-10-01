@@ -70,4 +70,50 @@ class RouterTest extends TestCase
         $this->assertEquals('with trailing slash', $router->dispatch(Request::create('foo/bar/', 'GET'))->getContent());
         $this->assertEquals('with trailing slash', $router->dispatch(Request::create('foo/bar', 'GET'))->getContent());
     }
+
+    /**
+     * @depends testAddRoute
+     */
+    public function testAddResourceRoute()
+    {
+        $router = $this->createRouter();
+        $router->resource('foo', 'NoSlashController');
+        $routes = $router->getRoutes()->getRoutes();
+
+        $this->assertTrue($routes[0] instanceof Route);
+        $this->assertFalse($routes[0]->hasTrailingSlash);
+
+        $router = $this->createRouter();
+        $router->resource('foo/', 'WithSlashController');
+        $routes = $router->getRoutes()->getRoutes();
+
+        foreach ($routes as $route) {
+            $this->assertTrue($route instanceof Route);
+            $this->assertTrue($route->hasTrailingSlash, 'No trailing slash for '.$route->uri);
+        }
+
+        $router = $this->createRouter();
+        $router->resource('foo', 'WithSlashController', ['only' => ['index', 'show'], 'trailingSlashOnly' => 'show']);
+        $routes = $router->getRoutes()->getRoutes();
+        $this->assertFalse($routes[0]->hasTrailingSlash);
+        $this->assertTrue($routes[1]->hasTrailingSlash);
+
+        $router = $this->createRouter();
+        $router->resource('foo', 'WithSlashController', ['only' => ['index', 'show'], 'trailingSlashExcept' => 'show']);
+        $routes = $router->getRoutes()->getRoutes();
+        $this->assertTrue($routes[0]->hasTrailingSlash);
+        $this->assertFalse($routes[1]->hasTrailingSlash);
+
+        $router = $this->createRouter();
+        $router->resource('foo', 'WithSlashController', ['only' => ['index', 'show'], 'trailingSlashOnly' => 'index', 'trailingSlashExcept' => 'show']);
+        $routes = $router->getRoutes()->getRoutes();
+        $this->assertTrue($routes[0]->hasTrailingSlash);
+        $this->assertFalse($routes[1]->hasTrailingSlash);
+
+        $router = $this->createRouter();
+        $router->resource('foo', 'WithSlashController', ['only' => ['index', 'show'], 'trailingSlashOnly' => ['index', 'show'], 'trailingSlashExcept' => 'show']);
+        $routes = $router->getRoutes()->getRoutes();
+        $this->assertTrue($routes[0]->hasTrailingSlash);
+        $this->assertFalse($routes[1]->hasTrailingSlash);
+    }
 }
