@@ -1,8 +1,8 @@
 Laravel URL Route Trailing Slash
 ================================
 
-1.1.1 Under Development
------------------------
+1.1.1, October 2, 2019
+----------------------
 
 - Enh #1: Added trailing slash options for resource routes definition (klimov-paul)
 
