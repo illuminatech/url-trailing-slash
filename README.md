@@ -101,11 +101,11 @@ Usage
 -----
 
 This extension allows enforcing URL routes with or without trailing slash. You can decide per each route, whether its URL
-should have a trailing slash or not, simply by addition or removal slash symbol ('/') in particular route definition.
+should have a trailing slash or not, simply adding or removing slash symbol ('/') in particular route definition.
 
-In case URI for particular route is specified with the trailing slash - it will be enforced for this route and request
+In case URL for particular route is specified with the trailing slash - it will be enforced for this route and request
 without slash in the URL ending will cause 301 redirection.
-In case URI for particular route is specified without the trailing slash - its absence will be enforced for this route
+In case URL for particular route is specified without the trailing slash - its absence will be enforced for this route
 and request containing slash in the URL end will cause 301 redirection.
 
 For example:
@@ -134,7 +134,7 @@ redirect request with incorrect URL according to the routes definition. For the 
 causes redirect to `http://example.com/items/` while request to `http://example.com/items/1/` causes redirect to `http://example.com/items/1`.
 
 **Heads up!** Remember, that with this extension installed, you are controlling requirements of URL trailing slashes presence
-or absence in **each** route you define. While normally Laravel strips any trailing slashes from route URI automatically,
+or absence in **each** route you define. While normally Laravel strips any trailing slashes from route URL automatically,
 this extension gives them meaning. You should carefully examine your routes definitions, ensuring you do not set trailing
 slash for the wrong ones.
 
@@ -152,7 +152,7 @@ You'll have to deal with trailing slash for root URL separately at the server se
 ### Resource Routes <span id="resource-routes"></span>
 
 You can define trailing slash presence for resource URLs using the same notation as for regular routes. In case resource
-name is specified with trailing slash all its URLs will have it. For example:
+name is specified with trailing slash, all its URLs will have it. For example:
 
 ```php
 <?php
@@ -173,8 +173,8 @@ echo route('categories.index'); // outputs: 'http://example.com/categories'
 echo route('categories.show', [1]); // outputs: 'http://example.com/categories/1'
 ```
 
-You can control trailing slash presence per each resource route using options 'trailingSlashOnly' and 'trailingSlashExcept'.
-These options behave in similar to regular 'only' and 'except', specifying list of resource controller methods, which should
+You can control trailing slash presence per each resource route using options 'trailingSlashOnly' and 'trailingSlashExcept' options.
+These ones behave in similar to regular 'only' and 'except', specifying list of resource controller methods, which should
 or should not have a trailing slash in their URL. For example:
 
 ```php
@@ -202,7 +202,7 @@ echo route('categories.show', [1]); // outputs: 'http://example.com/categories/1
 ### Trailing Slash in Unit Tests <span id="trailing-slash-in-unit-tests"></span>
 
 Since `Illuminatech\UrlTrailingSlash\RoutingServiceProvider` can not be registered as regular data provider, while writing
-unit and feature tests you will have to manually register it withing test application before test kernel instantiation.
+unit and feature tests you will have to manually register it within test application before test kernel instantiation.
 This can be done within `\Tests\CreatesApplication` trait:
 
 ```php
@@ -233,9 +233,9 @@ trait CreatesApplication
 }
 ```
 
-However this in not enough to make tests running correctly as Laravel automatically strips trailing slashes from requests
+However this in not enough to make tests running correctly, because Laravel automatically strips trailing slashes from requests
 URL before staring test HTTP request. Thus you will need to override `\Illuminate\Foundation\Testing\Concerns\MakesHttpRequests::prepareUrlForRequest()`
-in the way it respects trailing slashes. This can be achieved using `Illuminatech\UrlTrailingSlash\Testing\AllowsUrlTrailingSlash`.
+in the way it respects trailing slashes. This can be achieved using `Illuminatech\UrlTrailingSlash\Testing\AllowsUrlTrailingSlash` trait.
 For example:
 
 ```php
