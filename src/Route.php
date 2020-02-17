@@ -7,8 +7,8 @@
 
 namespace Illuminatech\UrlTrailingSlash;
 
-use Illuminate\Support\Str;
 use Illuminate\Routing\Route as BaseRoute;
+use Illuminate\Support\Str;
 
 /**
  * Route allows definition of the URL routes with trailing slashes.

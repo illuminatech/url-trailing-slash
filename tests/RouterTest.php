@@ -2,12 +2,12 @@
 
 namespace Illuminatech\UrlTrailingSlash\Test;
 
-use Illuminate\Http\Request;
-use Illuminate\Events\Dispatcher;
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Routing\Registrar;
+use Illuminate\Events\Dispatcher;
+use Illuminate\Http\Request;
 use Illuminatech\UrlTrailingSlash\Route;
 use Illuminatech\UrlTrailingSlash\Router;
-use Illuminate\Contracts\Routing\Registrar;
 
 class RouterTest extends TestCase
 {

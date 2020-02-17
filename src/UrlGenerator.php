@@ -7,8 +7,8 @@
 
 namespace Illuminatech\UrlTrailingSlash;
 
-use Illuminate\Support\Str;
 use Illuminate\Routing\UrlGenerator as BaseUrlGenerator;
+use Illuminate\Support\Str;
 
 /**
  * UrlGenerator is an enhanced version of {@see \Illuminate\Routing\UrlGenerator} supporting URL with trailing slash generation.

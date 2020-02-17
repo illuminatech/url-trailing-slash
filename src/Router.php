@@ -7,10 +7,10 @@
 
 namespace Illuminatech\UrlTrailingSlash;
 
-use Illuminate\Support\Str;
-use Illuminate\Routing\Router as BaseRouter;
 use Illuminate\Routing\PendingResourceRegistration;
 use Illuminate\Routing\ResourceRegistrar as BaseResourceRegistrar;
+use Illuminate\Routing\Router as BaseRouter;
+use Illuminate\Support\Str;
 
 /**
  * Router is an enhanced version of {@see \Illuminate\Routing\Router}, which allows routes with trailing slashes definition.

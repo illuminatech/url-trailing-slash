@@ -8,9 +8,9 @@
 namespace Illuminatech\UrlTrailingSlash\Middleware;
 
 use Closure;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\Str;
 use Illuminatech\UrlTrailingSlash\Route;
-use Illuminate\Contracts\Container\Container;
 
 /**
  * RedirectTrailingSlash is a middleware, which performs redirection in case URI trailing slash does not match the route.

@@ -3,15 +3,15 @@
 namespace Illuminatech\UrlTrailingSlash\Test\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Redirector;
 use Illuminate\Container\Container;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\Routing\RouteCollection;
+use Illuminatech\UrlTrailingSlash\Middleware\RedirectTrailingSlash;
 use Illuminatech\UrlTrailingSlash\Route;
 use Illuminatech\UrlTrailingSlash\Test\TestCase;
 use Illuminatech\UrlTrailingSlash\UrlGenerator;
-use Illuminatech\UrlTrailingSlash\Middleware\RedirectTrailingSlash;
 
 class RedirectTrailingSlashTest extends TestCase
 {
