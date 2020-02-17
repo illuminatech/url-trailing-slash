@@ -82,7 +82,7 @@ class Kernel extends HttpKernel
     
         'api' => [
             // probably you do not need trailing slash redirection anywhere besides public web routes,
-            // thus there is no reason for addition its middleware to other groups like API
+            // thus there is no reason for addition its middleware to other groups, like API
             'throttle:60,1',
             // ...
         ],
@@ -103,9 +103,9 @@ Usage
 This extension allows enforcing URL routes with or without trailing slash. You can decide per each route, whether its URL
 should have a trailing slash or not, simply adding or removing slash symbol ('/') in particular route definition.
 
-In case URL for particular route is specified with the trailing slash - it will be enforced for this route and request
+In case URL for particular route is specified with the trailing slash - it will be enforced for this route, and request
 without slash in the URL ending will cause 301 redirection.
-In case URL for particular route is specified without the trailing slash - its absence will be enforced for this route
+In case URL for particular route is specified without the trailing slash - its absence will be enforced for this route,
 and request containing slash in the URL end will cause 301 redirection.
 
 For example:
@@ -203,7 +203,7 @@ echo route('categories.show', [1]); // outputs: 'http://example.com/categories/1
 
 Since `Illuminatech\UrlTrailingSlash\RoutingServiceProvider` can not be registered as regular data provider, while writing
 unit and feature tests you will have to manually register it within test application before test kernel instantiation.
-This can be done within `\Tests\CreatesApplication` trait:
+This can be done within your `\Tests\CreatesApplication` trait:
 
 ```php
 <?php
@@ -233,7 +233,7 @@ trait CreatesApplication
 }
 ```
 
-However this in not enough to make tests running correctly, because Laravel automatically strips trailing slashes from requests
+However, this in not enough to make tests running correctly, because Laravel automatically strips trailing slashes from requests
 URL before staring test HTTP request. Thus you will need to override `\Illuminate\Foundation\Testing\Concerns\MakesHttpRequests::prepareUrlForRequest()`
 in the way it respects trailing slashes. This can be achieved using `Illuminatech\UrlTrailingSlash\Testing\AllowsUrlTrailingSlash` trait.
 For example:
