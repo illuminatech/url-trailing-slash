@@ -48,4 +48,36 @@ class UrlGeneratorTest extends TestCase
         $this->assertEquals('/foo/bar/', $urlGenerator->route('optional.param.with.slash', [], false));
         $this->assertEquals('/foo/bar/one/', $urlGenerator->route('optional.param.with.slash', ['one'], false));
     }
+
+    /**
+     * Data provider for {@see testGenerateFull()}
+     *
+     * @return array test data.
+     */
+    public function dataProviderGenerateFull(): array
+    {
+        return [
+            ['http://www.example.com/'],
+            ['http://www.example.com/?var=some'],
+            ['http://www.example.com/foo/bar'],
+            ['http://www.example.com/foo/bar/'],
+            ['http://www.example.com/foo/bar?var=some'],
+            ['http://www.example.com/foo/bar/?var=some'],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderGenerateFull
+     *
+     * @param string $uri
+     */
+    public function testGenerateFull(string $uri)
+    {
+        $urlGenerator = new UrlGenerator(
+            $routes = new RouteCollection(),
+            Request::create($uri)
+        );
+
+        $this->assertSame($uri, $urlGenerator->full());
+    }
 }

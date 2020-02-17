@@ -1,6 +1,12 @@
 Laravel URL Route Trailing Slash
 ================================
 
+1.1.2 Under Development
+-----------------------
+
+- Bug #3: Fix `UrlGenerator::full()` does not respects trailing slash in current request URI (klimov-paul)
+
+
 1.1.1, October 2, 2019
 ----------------------
 

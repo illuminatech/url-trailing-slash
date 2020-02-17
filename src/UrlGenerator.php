@@ -59,4 +59,25 @@ class UrlGenerator extends BaseUrlGenerator
 
         return $url;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function full()
+    {
+        $url = parent::full();
+
+        $pathInfo = $this->request->getPathInfo();
+        if (Str::endsWith($pathInfo, '/')) {
+            if (strpos($url, '?') === false) {
+                if (! Str::endsWith($url, '/')) {
+                    return $url.'/';
+                }
+            } elseif (strpos($url, '/?') === false) {
+                return str_replace('?', '/?', $url);
+            }
+        }
+
+        return $url;
+    }
 }
