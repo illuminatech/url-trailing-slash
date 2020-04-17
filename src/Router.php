@@ -39,7 +39,7 @@ class Router extends BaseRouter
     /**
      * {@inheritdoc}
      */
-    protected function newRoute($methods, $uri, $action)
+    public function newRoute($methods, $uri, $action)
     {
         return (new Route($methods, $uri, $action))
             ->setRouter($this)
