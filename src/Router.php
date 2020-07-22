@@ -7,6 +7,8 @@
 
 namespace Illuminatech\UrlTrailingSlash;
 
+use Illuminate\Container\Container;
+use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Routing\PendingResourceRegistration;
 use Illuminate\Routing\ResourceRegistrar as BaseResourceRegistrar;
 use Illuminate\Routing\Router as BaseRouter;
@@ -22,6 +24,16 @@ use Illuminate\Support\Str;
  */
 class Router extends BaseRouter
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct(Dispatcher $events, Container $container = null)
+    {
+        parent::__construct($events, $container);
+
+        $this->routes = new RouteCollection;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -71,5 +83,17 @@ class Router extends BaseRouter
         return new PendingResourceRegistration(
             $registrar, $name, $controller, $options
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCompiledRoutes(array $routes)
+    {
+        $this->routes = (new CompiledRouteCollection($routes['compiled'], $routes['attributes']))
+            ->setRouter($this)
+            ->setContainer($this->container);
+
+        $this->container->instance('routes', $this->routes);
     }
 }

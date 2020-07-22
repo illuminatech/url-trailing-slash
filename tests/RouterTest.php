@@ -116,4 +116,20 @@ class RouterTest extends TestCase
         $this->assertTrue($routes[0]->hasTrailingSlash);
         $this->assertFalse($routes[1]->hasTrailingSlash);
     }
+
+    /**
+     * @depends testAddRoute
+     */
+    public function testCompile()
+    {
+        $router = $this->createRouter();
+
+        $router->get('foo/bar/', function () {
+            return 'with trailing slash';
+        })->name('foo.bar');
+
+        $compiled = $router->getRoutes()->compile();
+
+        $this->assertTrue($compiled['attributes']['foo.bar']['hasTrailingSlash']);
+    }
 }
