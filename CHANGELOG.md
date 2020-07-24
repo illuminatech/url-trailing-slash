@@ -1,8 +1,8 @@
 Laravel URL Route Trailing Slash
 ================================
 
-1.1.5 Under Development
------------------------
+1.1.5, July 24, 2020
+--------------------
 
 - Bug #6: Fixed `Route::$hasTrailingSlash` value loss during route caching with "illuminate/routing" >= 7.0 (klimov-paul)
 
