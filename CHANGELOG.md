@@ -1,8 +1,8 @@
 Laravel URL Route Trailing Slash
 ================================
 
-1.1.6 Under Development
------------------------
+1.1.6, September 9, 2020
+------------------------
 
 - Enh: Added support for "illuminate/routing" 8.0 (klimov-paul)
 
