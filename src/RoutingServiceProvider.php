@@ -60,6 +60,10 @@ class RoutingServiceProvider extends ServiceProvider
                 $this->app->make('config')->get('app.asset_url')
             );
 
+            $newUrlGenerator->setKeyResolver(function () {
+                return $this->app->make('config')->get('app.key');
+            });
+
             return $newUrlGenerator;
         });
     }
