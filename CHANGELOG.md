@@ -1,8 +1,8 @@
 Laravel URL Route Trailing Slash
 ================================
 
-1.1.7 Under Development
------------------------
+1.1.7, November 13, 2020
+------------------------
 
 - Bug #8: Fixed `keyResolver` and `sessionResolver` setup for `UrlGenerator` (oheck, klimov-paul)
 
