@@ -18,6 +18,7 @@
         "illuminate/routing": "^6.0 || ^7.7.0 || ^8.0"
     },
     "require-dev": {
+        "illuminate/config": "*",
         "illuminate/events": "*",
         "phpunit/phpunit": "^8.0 || ^9.3"
     },
