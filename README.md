@@ -12,7 +12,7 @@ For license information check the [LICENSE](LICENSE.md)-file.
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/illuminatech/url-trailing-slash.svg)](https://packagist.org/packages/illuminatech/url-trailing-slash)
 [![Total Downloads](https://img.shields.io/packagist/dt/illuminatech/url-trailing-slash.svg)](https://packagist.org/packages/illuminatech/url-trailing-slash)
-[![Build Status](https://travis-ci.org/illuminatech/url-trailing-slash.svg?branch=master)](https://travis-ci.org/illuminatech/url-trailing-slash)
+[![Build Status](https://github.com/illuminatech/url-trailing-slash/workflows/build/badge.svg)](https://github.com/illuminatech/url-trailing-slash/actions)
 
 
 Installation
