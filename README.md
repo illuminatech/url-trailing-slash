@@ -12,7 +12,7 @@ For license information check the [LICENSE](LICENSE.md)-file.
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/illuminatech/url-trailing-slash.svg)](https://packagist.org/packages/illuminatech/url-trailing-slash)
 [![Total Downloads](https://img.shields.io/packagist/dt/illuminatech/url-trailing-slash.svg)](https://packagist.org/packages/illuminatech/url-trailing-slash)
-[![Build Status](https://travis-ci.org/illuminatech/url-trailing-slash.svg?branch=master)](https://travis-ci.org/illuminatech/url-trailing-slash)
+[![Build Status](https://github.com/illuminatech/url-trailing-slash/workflows/build/badge.svg)](https://github.com/illuminatech/url-trailing-slash/actions)
 
 
 Installation
@@ -197,6 +197,27 @@ echo route('categories.show', [1]); // outputs: 'http://example.com/categories/1
 ```
 
 > Note: 'trailingSlashExcept' option takes precedence over 'trailingSlashOnly'.
+
+
+### Trailing Slash in Pagination <span id="trailing-slash-in-pagination"></span>
+
+Unfortunately, the trailing slash will not automatically appear at pagination URLs.
+The problem is that Laravel paginators trim the trailing slashes from the URL path at the constructor level.
+Thus even adjustment of `\Illuminate\Pagination\Paginator::currentPathResolver()` can not fix the problem.
+
+In case you need a pagination at the URL endpoint with a trailing slash, you should manually set the path for it, using
+`\Illuminate\Pagination\AbstractPaginator::withPath()`. For example:
+
+```php
+<?php
+
+use App\Models\Item;
+use Illuminate\Support\Facades\URL;
+
+$items = Item::query()
+    ->paginate()
+    ->withPath(URL::current());
+```
 
 
 ### Trailing Slash in Unit Tests <span id="trailing-slash-in-unit-tests"></span>
