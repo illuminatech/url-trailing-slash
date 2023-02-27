@@ -54,7 +54,7 @@ class UrlGeneratorTest extends TestCase
      *
      * @return array test data.
      */
-    public function dataProviderGenerateFull(): array
+    public static function dataProviderGenerateFull(): array
     {
         return [
             ['http://www.example.com/'],

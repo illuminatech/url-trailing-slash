@@ -31,4 +31,5 @@ phpunit.phar
 # test runtime files
 /tests/storage
 # phpunit cache
+/.phpunit.cache
 .phpunit.result.cache

@@ -78,7 +78,7 @@ class RedirectTrailingSlashTest extends TestCase
      *
      * @return array test data.
      */
-    public function dataProviderRedirect(): array
+    public static function dataProviderRedirect(): array
     {
         return [
             [
@@ -129,7 +129,7 @@ class RedirectTrailingSlashTest extends TestCase
      *
      * @return array test data.
      */
-    public function dataProviderNoRedirect(): array
+    public static function dataProviderNoRedirect(): array
     {
         return [
             [

@@ -6,6 +6,8 @@ use Illuminate\Container\Container;
 use Illuminate\Contracts\Routing\Registrar;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Http\Request;
+use Illuminate\Routing\CallableDispatcher;
+use Illuminate\Routing\Contracts\CallableDispatcher as CallableDispatcherContract;
 use Illuminatech\UrlTrailingSlash\Route;
 use Illuminatech\UrlTrailingSlash\Router;
 
@@ -23,6 +25,12 @@ class RouterTest extends TestCase
         $container->singleton(Registrar::class, function () use ($router) {
             return $router;
         });
+
+        if (class_exists(CallableDispatcher::class)) {
+            $container->singleton(CallableDispatcherContract::class, function ($app) {
+                return new CallableDispatcher($app);
+            });
+        }
 
         return $router;
     }

@@ -15,12 +15,12 @@
         }
     ],
     "require": {
-        "illuminate/routing": "^6.0 || ^7.7.0 || ^8.0 || ^9.0"
+        "illuminate/routing": "^6.0 || ^7.7.0 || ^8.0 || ^9.0 || ^10.0"
     },
     "require-dev": {
         "illuminate/config": "*",
         "illuminate/events": "*",
-        "phpunit/phpunit": "^8.0 || ^9.3"
+        "phpunit/phpunit": "^8.0 || ^9.3 || ^10.0.7"
     },
     "autoload": {
         "psr-4": {
