@@ -1,8 +1,8 @@
 Laravel URL Route Trailing Slash
 ================================
 
-1.1.10 Under Development
-------------------------
+1.1.10, June 23, 2023
+---------------------
 
 - Bug #12: Fixed incorrect default route name generation for `Route::resource()` with trailing slash (klimov-paul)
 
