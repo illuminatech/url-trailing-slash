@@ -64,7 +64,7 @@ class Router extends BaseRouter
     public function resource($name, $controller, array $options = [])
     {
         if (Str::endsWith($name, '/')) {
-            $name = rtrim($name);
+            $name = rtrim($name, "/ \t\n\r\0\x0B");
             if (! isset($options['trailingSlashOnly'])) {
                 $options['trailingSlashOnly'] = ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'];
             }

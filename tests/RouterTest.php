@@ -126,6 +126,28 @@ class RouterTest extends TestCase
     }
 
     /**
+     * @see https://github.com/illuminatech/url-trailing-slash/issues/12
+     *
+     * @depends testAddResourceRoute
+     */
+    public function testResourceDefaultNaming()
+    {
+        $router = $this->createRouter();
+        $router->resource('foo', 'NoSlashController');
+        $routes = $router->getRoutes()->getRoutes();
+
+        $this->assertTrue($routes[0] instanceof Route);
+        $this->assertSame('foo.index', $routes[0]->action['as']);
+
+        $router = $this->createRouter();
+        $router->resource('foo/', 'WithSlashController');
+        $routes = $router->getRoutes()->getRoutes();
+
+        $this->assertTrue($routes[0] instanceof Route);
+        $this->assertSame('foo.index', $routes[0]->action['as']);
+    }
+
+    /**
      * @depends testAddRoute
      */
     public function testCompile()
