@@ -68,12 +68,12 @@ class RedirectTrailingSlash
      */
     public function handle($request, Closure $next)
     {
-        if (! in_array($request->getMethod(), ['GET', 'HEAD', 'OPTIONS'])) {
+        if (!in_array($request->getMethod(), ['GET', 'HEAD', 'OPTIONS'])) {
             return $next($request);
         }
 
         $currentRoute = $request->route();
-        if (! $currentRoute instanceof Route) {
+        if (!$currentRoute instanceof Route) {
             return $next($request);
         }
 
@@ -86,16 +86,24 @@ class RedirectTrailingSlash
         }
 
         if (Str::endsWith($pathInfo, '/')) {
-            if (! $currentRoute->hasTrailingSlash) {
+            if ($currentRoute->hasTrailingSlash) {
+                $expectedPathInfo = rtrim($pathInfo, '/') . '/';
+                if ($expectedPathInfo !== $pathInfo) { // multiple trailing slashes, e.g. '/path/info///'
+                    $url = $this->createRedirectUrl($request, $expectedPathInfo);
+
+                    return $this->redirect($url);
+                }
+            } else {
                 $url = $this->createRedirectUrl($request, rtrim($pathInfo, '/'));
 
                 return $this->redirect($url);
             }
+
             return $next($request);
         }
 
         if ($currentRoute->hasTrailingSlash) {
-            $url = $this->createRedirectUrl($request, $pathInfo.'/');
+            $url = $this->createRedirectUrl($request, $pathInfo . '/');
 
             return $this->redirect($url);
         }
@@ -120,7 +128,7 @@ class RedirectTrailingSlash
         $url .= $newPath;
 
         if (($queryString = $request->getQueryString()) !== null) {
-            $url .= '?'.$queryString;
+            $url .= '?' . $queryString;
         }
 
         return $url;

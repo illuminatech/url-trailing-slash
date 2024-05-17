@@ -101,6 +101,11 @@ class RedirectTrailingSlashTest extends TestCase
                 'http://example.com/foo/bar/?name=value',
                 'http://example.com/foo/bar?name=value',
             ],
+            [
+                'foo/bar/',
+                'http://example.com/foo/bar//',
+                'http://example.com/foo/bar/'
+            ],
         ];
     }
 
