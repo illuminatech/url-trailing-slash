@@ -1,8 +1,8 @@
 Laravel URL Route Trailing Slash
 ================================
 
-1.1.12 Under Development
-------------------------
+1.1.12, May 17, 2024
+--------------------
 
 - Bug #15: Fixed `RedirectTrailingSlash` middleware no longer allows multiple trailing slashes (klimov-paul)
 
