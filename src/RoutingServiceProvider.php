@@ -19,17 +19,21 @@ use Illuminate\Support\ServiceProvider;
  * ```php
  * <?php
  *
- * $app = new Illuminate\Foundation\Application(
- *     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
- * );
+ * use Illuminate\Foundation\Application;
+ * use Illuminate\Foundation\Configuration\Exceptions;
+ * use Illuminate\Foundation\Configuration\Middleware;
  *
- * $app->singleton(
- *     Illuminate\Contracts\Http\Kernel::class,
- *     App\Http\Kernel::class
- * );
- * // ...
+ * $app = Application::configure(basePath: dirname(__DIR__))
+ *     ->withRouting(
+ *         // ...
+ *     )
+ *     ->withMiddleware(function (Middleware $middleware) {
+ *         // ...
+ *     })
+ *     // ...
+ *     ->create();
  *
- * $app->register(new Illuminatech\UrlTrailingSlash\RoutingServiceProvider($app));
+ * $app->register(new Illuminatech\UrlTrailingSlash\RoutingServiceProvider($app)); // register trailing slashes routing
  *
  * return $app;
  * ```

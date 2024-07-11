@@ -41,15 +41,19 @@ in 'bootstrap/app.php' file of regular Laravel application. For example:
 ```php
 <?php
 
-$app = new Illuminate\Foundation\Application(
-    $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
-);
+use Illuminate\Foundation\Application;
+use Illuminate\Foundation\Configuration\Exceptions;
+use Illuminate\Foundation\Configuration\Middleware;
 
-$app->singleton(
-    Illuminate\Contracts\Http\Kernel::class,
-    App\Http\Kernel::class
-);
-// ...
+$app = Application::configure(basePath: dirname(__DIR__))
+    ->withRouting(
+        // ...
+    )
+    ->withMiddleware(function (Middleware $middleware) {
+        // ...
+    })
+    // ...
+    ->create();
 
 $app->register(new Illuminatech\UrlTrailingSlash\RoutingServiceProvider($app)); // register trailing slashes routing
 
@@ -65,30 +69,26 @@ middleware to your HTTP kernel. For example:
 ```php
 <?php
 
-namespace App\Http;
+use Illuminate\Foundation\Application;
+use Illuminate\Foundation\Configuration\Exceptions;
+use Illuminate\Foundation\Configuration\Middleware;
 
-use Illuminate\Foundation\Http\Kernel as HttpKernel;
-
-class Kernel extends HttpKernel
-{
-    protected $middlewareGroups = [
-        'web' => [
-            \Illuminatech\UrlTrailingSlash\Middleware\RedirectTrailingSlash::class, // enable automatic redirection on incorrect URL trailing slashes
-            \App\Http\Middleware\EncryptCookies::class,
-            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
-            \Illuminate\Session\Middleware\StartSession::class,
-            // ...
-        ],
-    
-        'api' => [
-            // probably you do not need trailing slash redirection anywhere besides public web routes,
-            // thus there is no reason for addition its middleware to other groups, like API
-            'throttle:60,1',
-            // ...
-        ],
-    ];
+$app = Application::configure(basePath: dirname(__DIR__))
+    ->withRouting(
+        // ...
+    )
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->prependToGroup('web', Illuminatech\UrlTrailingSlash\Middleware\RedirectTrailingSlash::class); // enable automatic redirection on incorrect URL trailing slashes
+        // probably you do not need trailing slash redirection anywhere besides public web routes,
+        // thus there is no reason for addition its middleware to other groups, like API
+        // ...
+    })
     // ...
-}
+    ->create();
+
+$app->register(new Illuminatech\UrlTrailingSlash\RoutingServiceProvider($app)); // register trailing slashes routing
+
+return $app;
 ```
 
 **Heads up!** Make sure you do not have any trailing slash redirection mechanism at the server configuration level, which
@@ -174,7 +174,7 @@ echo route('categories.show', [1]); // outputs: 'http://example.com/categories/1
 ```
 
 You can control trailing slash presence per each resource route using options 'trailingSlashOnly' and 'trailingSlashExcept' options.
-These ones behave in similar to regular 'only' and 'except', specifying list of resource controller methods, which should
+These behave in similar to regular 'only' and 'except', specifying list of resource controller methods, which should
 or should not have a trailing slash in their URL. For example:
 
 ```php

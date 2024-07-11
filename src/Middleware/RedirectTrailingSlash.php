@@ -18,21 +18,26 @@ use Illuminatech\UrlTrailingSlash\Route;
  * This middleware should be assigned to the route group, which should maintain SEO, for example:
  *
  * ```php
- * namespace App\Http;
+ * <?php
  *
- * use Illuminate\Foundation\Http\Kernel as HttpKernel;
+ * use Illuminate\Foundation\Application;
+ * use Illuminate\Foundation\Configuration\Exceptions;
+ * use Illuminate\Foundation\Configuration\Middleware;
  *
- * class Kernel extends HttpKernel
- * {
- *     protected $middlewareGroups = [
- *         'web' => [
- *             \Illuminatech\UrlTrailingSlash\Middleware\RedirectTrailingSlash::class,
- *             // ...
- *         ],
+ * $app = Application::configure(basePath: dirname(__DIR__))
+ *     ->withRouting(
+ *         $middleware->prependToGroup('web', Illuminatech\UrlTrailingSlash\Middleware\RedirectTrailingSlash::class); // enable automatic redirection on incorrect URL trailing slashes
  *         // ...
- *     ];
+ *     )
+ *     ->withMiddleware(function (Middleware $middleware) {
+ *         // ...
+ *     })
  *     // ...
- * }
+ *     ->create();
+ *
+ * $app->register(new Illuminatech\UrlTrailingSlash\RoutingServiceProvider($app)); // register trailing slashes routing
+ *
+ * return $app;
  * ```
  *
  * > Tip: there is no point to assign this middleware to the routes, which are not indexed by search engines, like API.
