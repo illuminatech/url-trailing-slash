@@ -1,6 +1,12 @@
 Laravel URL Route Trailing Slash
 ================================
 
+1.1.13 Under Development
+------------------------
+
+- Bug #17: Fixed missing explicit nullable type hint at `Router` for PHP 8.4 (daikazu)
+
+
 1.1.12, May 17, 2024
 --------------------
 
