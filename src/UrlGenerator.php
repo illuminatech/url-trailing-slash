@@ -28,7 +28,7 @@ class UrlGenerator extends BaseUrlGenerator
         $url = parent::format($root, $path, $route);
 
         if ($route === null) {
-            if (Str::endsWith($path, '/')) {
+            if (!Str::endsWith($path, '/')) {
                 return $url.'/';
             }
 
