@@ -16,6 +16,8 @@ class UrlGeneratorTest extends TestCase
             Request::create('http://www.example.com/')
         );
 
+        $this->assertEquals('http://www.example.com/', $urlGenerator->to('/'));
+        $this->assertEquals('http://www.example.com/foo/', $urlGenerator->to('foo/'));
         $this->assertEquals('http://www.example.com/foo/bar', $urlGenerator->to('foo/bar'));
         $this->assertEquals('http://www.example.com/foo/bar/', $urlGenerator->to('foo/bar/'));
         $this->assertEquals('http://www.example.com/foo/bar/', $urlGenerator->to('foo/bar//'));

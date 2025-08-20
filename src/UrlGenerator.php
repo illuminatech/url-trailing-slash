@@ -53,7 +53,7 @@ class UrlGenerator extends BaseUrlGenerator
 
         $url = parent::to($path, $extra, $secure);
 
-        if (Str::endsWith($path, '/')) {
+        if (Str::endsWith($path, '/') && $path !== '/') {
             return $url.'/';
         }
 
