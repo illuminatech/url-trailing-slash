@@ -1,8 +1,8 @@
 Laravel URL Route Trailing Slash
 ================================
 
-1.1.15 Under Development
-------------------------
+1.1.15, August 20, 2025
+-----------------------
 
 - Bug #20: Fixed `UrlGenerator::to()` add extra slashes while creating URL for the root path (arnidan)
 
